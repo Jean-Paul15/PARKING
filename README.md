@@ -8,7 +8,7 @@ Il a ete realise dans le cadre du module d'Algorithmique du cursus ingenieur.
 ## Auteur
 
 - **Encadrant** : Dr ANAKPA
-- **Annee** : 2024-2025
+- **Annee** : 2025
 
 ## Fonctionnalites
 
