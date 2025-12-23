@@ -1,0 +1,989 @@
+%% ============================================================================
+%% RAPPORT DE PROJET - SYSTEME DE GESTION DE PARKING
+%% Charge de cours : Dr ANAKPA
+%% Date : Decembre 2025
+%% ============================================================================
+
+\documentclass[12pt,a4paper,french]{report}
+
+%% ----------------------------------------------------------------------------
+%% PACKAGES
+%% ----------------------------------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{tcolorbox}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+
+%% ----------------------------------------------------------------------------
+%% CONFIGURATION DES COULEURS
+%% ----------------------------------------------------------------------------
+\definecolor{bleuPrincipal}{RGB}{0, 71, 133}
+\definecolor{bleuSecondaire}{RGB}{51, 122, 183}
+\definecolor{grisTexte}{RGB}{51, 51, 51}
+\definecolor{grisClair}{RGB}{248, 249, 250}
+\definecolor{vertCode}{RGB}{40, 167, 69}
+\definecolor{orangeAccent}{RGB}{255, 153, 0}
+
+%% ----------------------------------------------------------------------------
+%% CONFIGURATION DE LA PAGE
+%% ----------------------------------------------------------------------------
+\geometry{
+    top=2.5cm,
+    bottom=2.5cm,
+    left=2.5cm,
+    right=2.5cm,
+    headheight=15pt
+}
+
+%% ----------------------------------------------------------------------------
+%% STYLE DES EN-TETES ET PIEDS DE PAGE
+%% ----------------------------------------------------------------------------
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textcolor{bleuPrincipal}{\small Projet Algorithmique}}
+\fancyhead[R]{\textcolor{bleuPrincipal}{\small Gestion de Parking}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+%% ----------------------------------------------------------------------------
+%% STYLE DES TITRES
+%% ----------------------------------------------------------------------------
+\titleformat{\chapter}[display]
+    {\normalfont\huge\bfseries\color{bleuPrincipal}}
+    {\chaptertitlename\ \thechapter}{20pt}{\Huge}
+\titleformat{\section}
+    {\normalfont\Large\bfseries\color{bleuSecondaire}}
+    {\thesection}{1em}{}
+\titleformat{\subsection}
+    {\normalfont\large\bfseries\color{grisTexte}}
+    {\thesubsection}{1em}{}
+
+%% ----------------------------------------------------------------------------
+%% CONFIGURATION DU CODE SOURCE
+%% ----------------------------------------------------------------------------
+\lstdefinestyle{codeC}{
+    language=C,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{bleuPrincipal}\bfseries,
+    commentstyle=\color{vertCode}\itshape,
+    stringstyle=\color{orangeAccent},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    numbersep=8pt,
+    frame=single,
+    framesep=5pt,
+    backgroundcolor=\color{grisClair},
+    breaklines=true,
+    breakatwhitespace=true,
+    tabsize=4,
+    showstringspaces=false,
+    captionpos=b
+}
+\lstset{style=codeC}
+
+%% ----------------------------------------------------------------------------
+%% BOITES COLOREES
+%% ----------------------------------------------------------------------------
+\tcbuselibrary{skins,breakable}
+
+\newtcolorbox{boiteImportante}{
+    colback=bleuSecondaire!10,
+    colframe=bleuPrincipal,
+    arc=3mm,
+    boxrule=1pt,
+    left=10pt,
+    right=10pt,
+    top=10pt,
+    bottom=10pt
+}
+
+\newtcolorbox{boiteDefinition}{
+    colback=grisClair,
+    colframe=grisTexte,
+    arc=2mm,
+    boxrule=0.5pt,
+    title={\textbf{Definition}},
+    fonttitle=\bfseries\color{white},
+    coltitle=white,
+    colbacktitle=bleuSecondaire
+}
+
+%% ----------------------------------------------------------------------------
+%% LIENS HYPERTEXTE
+%% ----------------------------------------------------------------------------
+\hypersetup{
+    colorlinks=true,
+    linkcolor=bleuPrincipal,
+    filecolor=bleuSecondaire,
+    urlcolor=bleuSecondaire,
+    pdftitle={Systeme de Gestion de Parking}
+}
+
+%% ============================================================================
+%% DEBUT DU DOCUMENT
+%% ============================================================================
+\begin{document}
+
+%% ----------------------------------------------------------------------------
+%% PAGE DE GARDE
+%% ----------------------------------------------------------------------------
+\begin{titlepage}
+    \begin{tikzpicture}[remember picture, overlay]
+        %% Bande superieure
+        \fill[bleuPrincipal] (current page.north west) rectangle 
+            ([yshift=-4cm]current page.north east);
+        %% Bande inferieure
+        \fill[bleuSecondaire] (current page.south west) rectangle 
+            ([yshift=2cm]current page.south east);
+        %% Ligne decorative
+        \draw[orangeAccent, line width=3pt] 
+            ([yshift=-4cm]current page.north west) -- 
+            ([yshift=-4cm]current page.north east);
+    \end{tikzpicture}
+    
+    \vspace*{2cm}
+    
+    \begin{center}
+        {\Large\textcolor{white}{\textbf{CURSUS INGENIEUR -- MISE A NIVEAU}}}
+        
+        \vspace{0.5cm}
+        
+        {\large\textcolor{white}{Module : Algorithmique}}
+    \end{center}
+    
+    \vspace{4cm}
+    
+    \begin{center}
+        {\Huge\textbf{\textcolor{bleuPrincipal}{Systeme de Gestion}}}
+        
+        \vspace{0.5cm}
+        
+        {\Huge\textbf{\textcolor{bleuPrincipal}{de Parking}}}
+        
+        \vspace{1cm}
+        
+        {\Large\textcolor{bleuSecondaire}{Projet de fin de module}}
+    \end{center}
+    
+    \vspace{3cm}
+    
+    \begin{center}
+        \begin{tikzpicture}
+            \draw[bleuPrincipal, line width=1pt, rounded corners=5pt] 
+                (0,0) rectangle (12,3);
+            \node at (6,2.2) {\Large\textbf{Projet de fin de module}};
+            \node at (6,0.7) {\small Etudiant en cycle ingenieur};
+        \end{tikzpicture}
+    \end{center}
+    
+    \vspace{1.5cm}
+    
+    \begin{center}
+        \begin{tikzpicture}
+            \draw[bleuSecondaire, line width=1pt, rounded corners=5pt] 
+                (0,0) rectangle (12,2.5);
+            \node at (6,1.8) {\Large\textbf{Charge de cours :}};
+            \node at (6,1) {\large Dr ANAKPA};
+        \end{tikzpicture}
+    \end{center}
+    
+    \vfill
+    
+    \begin{center}
+        {\large\textcolor{bleuSecondaire}{Annee academique 2025--2026}}
+    \end{center}
+    
+\end{titlepage}
+
+%% ----------------------------------------------------------------------------
+%% TABLE DES MATIERES
+%% ----------------------------------------------------------------------------
+\tableofcontents
+\newpage
+
+%% ============================================================================
+%% INTRODUCTION
+%% ============================================================================
+\chapter{Introduction}
+
+\section{Contexte du projet}
+
+Dans le cadre du module d'algorithmique du cursus ingenieur, il nous a ete demande de realiser un projet permettant de mettre en pratique l'ensemble des notions etudiees durant le cours. Ce projet doit demontrer notre maitrise des concepts fondamentaux de la programmation structuree en langage C.
+
+\begin{boiteImportante}
+L'objectif principal est de concevoir et implementer un \textbf{systeme complet de gestion de parking} qui integre toutes les notions algorithmiques du cours : variables, types, structures de controle, tableaux, structures, fonctions, pointeurs, ainsi que les algorithmes de tri et de recherche.
+\end{boiteImportante}
+
+\section{Objectifs du projet}
+
+Les objectifs specifiques de ce projet sont les suivants :
+
+\begin{enumerate}[label=\textcolor{bleuPrincipal}{\arabic*.}]
+    \item \textbf{Appliquer les notions de base} : utilisation des variables, constantes et types de donnees primitifs.
+    \item \textbf{Maitriser les structures de controle} : conditions (if/else, switch) et boucles (for, while, do-while).
+    \item \textbf{Manipuler les tableaux} : tableaux a une et deux dimensions pour stocker les donnees.
+    \item \textbf{Utiliser les structures} : definition de types composites pour modeliser les entites du domaine.
+    \item \textbf{Implementer des fonctions} : decomposition modulaire du code avec passage de parametres.
+    \item \textbf{Appliquer les pointeurs} : allocation dynamique et manipulation d'adresses memoire.
+    \item \textbf{Implementer des algorithmes de tri} : tri par selection et tri par insertion.
+    \item \textbf{Implementer des algorithmes de recherche} : recherche sequentielle et dichotomique.
+\end{enumerate}
+
+\section{Organisation du rapport}
+
+Ce rapport est structure en plusieurs chapitres :
+
+\begin{itemize}[label=\textcolor{bleuSecondaire}{$\bullet$}]
+    \item \textbf{Chapitre 2} : Analyse et conception du systeme
+    \item \textbf{Chapitre 3} : Implementation et structures de donnees
+    \item \textbf{Chapitre 4} : Algorithmes de tri et recherche
+    \item \textbf{Chapitre 5} : Interface utilisateur et menus
+    \item \textbf{Chapitre 6} : Tests et resultats
+    \item \textbf{Conclusion} : Bilan et perspectives
+\end{itemize}
+
+%% ============================================================================
+%% ANALYSE ET CONCEPTION
+%% ============================================================================
+\chapter{Analyse et conception}
+
+\section{Description fonctionnelle}
+
+Le systeme de gestion de parking permet de gerer un parking automobile en suivant les vehicules qui entrent et sortent, en calculant automatiquement les frais de stationnement, et en fournissant des statistiques d'utilisation.
+
+\subsection{Fonctionnalites principales}
+
+\begin{table}[H]
+\centering
+\caption{Liste des fonctionnalites du systeme}
+\begin{tabularx}{\textwidth}{|c|X|}
+\hline
+\rowcolor{bleuPrincipal}
+\textcolor{white}{\textbf{Module}} & \textcolor{white}{\textbf{Description}} \\
+\hline
+Gestion des entrees & Enregistrement des vehicules entrant dans le parking \\
+\hline
+Gestion des sorties & Enregistrement des sorties avec calcul automatique du montant \\
+\hline
+Gestion des places & Affichage de l'etat des places, mise hors service, reservation \\
+\hline
+Recherche & Recherche de vehicules par plaque d'immatriculation \\
+\hline
+Statistiques & Rapports d'occupation, recettes, historique \\
+\hline
+Persistance & Sauvegarde et chargement des donnees \\
+\hline
+\end{tabularx}
+\end{table}
+
+\subsection{Types de vehicules}
+
+Le systeme gere quatre types de vehicules, chacun avec un tarif specifique :
+
+\begin{enumerate}[label=\textcolor{bleuSecondaire}{\arabic*.}]
+    \item \textbf{Voiture} : tarif de base (200 FCFA/heure)
+    \item \textbf{Moto} : 50\% du tarif de base (100 FCFA/heure)
+    \item \textbf{Camion} : 150\% du tarif de base (300 FCFA/heure)
+    \item \textbf{Bus} : 200\% du tarif de base (400 FCFA/heure)
+\end{enumerate}
+
+\section{Architecture du systeme}
+
+\subsection{Organisation des fichiers}
+
+Le projet suit une architecture modulaire conforme aux bonnes pratiques de developpement :
+
+\begin{lstlisting}[caption={Structure du projet}]
+projet_parking/
+    |-- main.c                 # Point d'entree
+    |-- Makefile               # Script de compilation
+    |-- include/               # Fichiers d'en-tete
+    |   |-- types.h            # Definitions des types
+    |   |-- utilitaires.h      # Fonctions utilitaires
+    |   |-- parking.h          # Gestion du parking
+    |   |-- tri_recherche.h    # Algorithmes
+    |   |-- statistiques.h     # Rapports
+    |   +-- menu.h             # Interface utilisateur
+    +-- src/                   # Fichiers sources
+        |-- utilitaires.c
+        |-- parking_init.c
+        |-- parking_places.c
+        |-- parking_vehicules.c
+        |-- tri_recherche.c
+        |-- recherche.c
+        |-- statistiques.c
+        +-- menu.c
+\end{lstlisting}
+
+\subsection{Diagramme des modules}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    module/.style={rectangle, draw=bleuPrincipal, fill=bleuSecondaire!20, 
+                   minimum width=3cm, minimum height=1cm, text centered,
+                   rounded corners=3pt, font=\small},
+    arrow/.style={->, thick, bleuPrincipal}
+]
+    %% Module principal
+    \node[module, fill=bleuPrincipal!30] (main) at (0,0) {main.c};
+    
+    %% Modules de premier niveau
+    \node[module] (menu) at (-4,-2) {menu};
+    \node[module] (parking) at (0,-2) {parking};
+    \node[module] (stats) at (4,-2) {statistiques};
+    
+    %% Modules de support
+    \node[module] (tri) at (-2,-4) {tri\_recherche};
+    \node[module] (utils) at (2,-4) {utilitaires};
+    
+    %% Types (base)
+    \node[module, fill=orangeAccent!30] (types) at (0,-6) {types.h};
+    
+    %% Fleches
+    \draw[arrow] (main) -- (menu);
+    \draw[arrow] (main) -- (parking);
+    \draw[arrow] (main) -- (stats);
+    \draw[arrow] (menu) -- (utils);
+    \draw[arrow] (parking) -- (tri);
+    \draw[arrow] (parking) -- (utils);
+    \draw[arrow] (stats) -- (utils);
+    \draw[arrow] (tri) -- (types);
+    \draw[arrow] (utils) -- (types);
+\end{tikzpicture}
+\caption{Architecture modulaire du systeme}
+\end{figure}
+
+%% ============================================================================
+%% IMPLEMENTATION
+%% ============================================================================
+\chapter{Implementation et structures de donnees}
+
+\section{Definitions des types}
+
+\subsection{Types enumeres}
+
+Les types enumeres permettent de definir des ensembles de constantes nommees, ameliorant la lisibilite du code.
+
+\begin{lstlisting}[caption={Definition des types enumeres}]
+/* Types de vehicules acceptes */
+typedef enum {
+    VOITURE = 1,
+    MOTO = 2,
+    CAMION = 3,
+    BUS = 4
+} TypeVehicule;
+
+/* Etats possibles d'une place */
+typedef enum {
+    LIBRE = 0,
+    OCCUPEE = 1,
+    RESERVEE = 2,
+    HORS_SERVICE = 3
+} EtatPlace;
+\end{lstlisting}
+
+\subsection{Structures de donnees}
+
+\begin{boiteDefinition}
+Une \textbf{structure} (ou enregistrement) est un type de donnee compose permettant de regrouper des variables de types differents sous un meme nom. En C, on utilise le mot-cle \texttt{struct} pour definir une structure.
+\end{boiteDefinition}
+
+\begin{lstlisting}[caption={Structure Vehicule}]
+typedef struct {
+    char plaque[TAILLE_PLAQUE];     /* Immatriculation */
+    char proprietaire[MAX_CHAINE];   /* Nom du proprietaire */
+    TypeVehicule type;               /* Type de vehicule */
+    Horodatage entree;               /* Date/heure d'entree */
+    Horodatage sortie;               /* Date/heure de sortie */
+    int estPresent;                  /* Drapeau de presence */
+    float montantPaye;               /* Montant facture */
+} Vehicule;
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Structure Place}]
+typedef struct {
+    int numero;                  /* Numero de la place */
+    EtatPlace etat;              /* Etat actuel */
+    TypeVehicule typeAutorise;   /* Type de vehicule autorise */
+    Vehicule *vehiculeActuel;    /* Pointeur vers le vehicule */
+} Place;
+\end{lstlisting}
+
+\subsection{Structure principale}
+
+La structure \texttt{Parking} centralise toutes les donnees du systeme :
+
+\begin{lstlisting}[caption={Structure Parking}]
+typedef struct {
+    char nom[MAX_CHAINE];
+    Place places[MAX_PLACES];        /* Tableau de places */
+    int nombrePlaces;
+    int placesLibres;
+    int placesOccupees;
+    Vehicule historique[MAX_VEHICULES]; /* Historique */
+    int nombreVehicules;
+    float recetteJournaliere;
+    float recetteTotale;
+} Parking;
+\end{lstlisting}
+
+\section{Utilisation des tableaux}
+
+\subsection{Tableaux a une dimension}
+
+Les tableaux a une dimension sont utilises pour stocker :
+\begin{itemize}
+    \item Les places de parking (\texttt{Place places[MAX\_PLACES]})
+    \item L'historique des vehicules (\texttt{Vehicule historique[MAX\_VEHICULES]})
+    \item Les compteurs par type de vehicule (\texttt{int compteurs[5]})
+\end{itemize}
+
+\subsection{Manipulation des tableaux}
+
+\begin{lstlisting}[caption={Parcours d'un tableau avec boucle For}]
+void afficherVehiculesPresents(const Parking *parking)
+{
+    int i;
+    
+    for (i = 0; i < parking->nombreVehicules; i++) {
+        if (parking->historique[i].estPresent == 1) {
+            printf("%s\n", parking->historique[i].plaque);
+        }
+    }
+}
+\end{lstlisting}
+
+\section{Utilisation des pointeurs}
+
+\subsection{Pointeurs et allocation}
+
+\begin{boiteDefinition}
+Un \textbf{pointeur} est une variable qui contient l'adresse memoire d'une autre variable. Les pointeurs permettent la manipulation indirecte des donnees et le passage par reference.
+\end{boiteDefinition}
+
+Dans notre projet, les pointeurs sont utilises pour :
+\begin{itemize}
+    \item Lier une place a son vehicule (\texttt{Vehicule *vehiculeActuel})
+    \item Passer les structures aux fonctions par reference
+    \item Retourner des resultats de recherche
+\end{itemize}
+
+\begin{lstlisting}[caption={Utilisation des pointeurs}]
+/* Passage par pointeur pour modification */
+int initialiserParking(Parking *parking, const char *nom, 
+                       int nombrePlaces)
+{
+    /* Acces aux champs via l'operateur fleche */
+    parking->nombrePlaces = nombrePlaces;
+    parking->placesLibres = nombrePlaces;
+    return 1;
+}
+
+/* Retour d'un pointeur */
+Vehicule* rechercherVehicule(Parking *parking, 
+                             const char *plaque)
+{
+    int i;
+    for (i = 0; i < parking->nombreVehicules; i++) {
+        if (strcmp(parking->historique[i].plaque, plaque) == 0) {
+            return &parking->historique[i];
+        }
+    }
+    return NULL; /* Non trouve */
+}
+\end{lstlisting}
+
+%% ============================================================================
+%% ALGORITHMES
+%% ============================================================================
+\chapter{Algorithmes de tri et recherche}
+
+\section{Algorithmes de tri}
+
+\subsection{Tri par selection}
+
+\begin{boiteDefinition}
+Le \textbf{tri par selection} consiste a rechercher le plus petit element du tableau et a le placer en premiere position, puis a recommencer avec le reste du tableau.
+\end{boiteDefinition}
+
+\textbf{Complexite} : $O(n^2)$ dans tous les cas.
+
+\begin{lstlisting}[caption={Implementation du tri par selection}]
+void triSelectionVehicules(Vehicule vehicules[], int taille)
+{
+    int i, j, indiceMin;
+    
+    for (i = 0; i < taille - 1; i++) {
+        /* Trouver le minimum dans [i, taille-1] */
+        indiceMin = i;
+        
+        for (j = i + 1; j < taille; j++) {
+            if (comparerPlaques(vehicules[j].plaque, 
+                               vehicules[indiceMin].plaque) < 0) {
+                indiceMin = j;
+            }
+        }
+        
+        /* Echanger si necessaire */
+        if (indiceMin != i) {
+            echangerVehicules(&vehicules[i], 
+                             &vehicules[indiceMin]);
+        }
+    }
+}
+\end{lstlisting}
+
+\subsection{Tri par insertion}
+
+\begin{boiteDefinition}
+Le \textbf{tri par insertion} consiste a inserer chaque element a sa place dans la partie deja triee du tableau, en decalant les elements plus grands.
+\end{boiteDefinition}
+
+\textbf{Complexite} : $O(n^2)$ dans le pire cas, $O(n)$ dans le meilleur cas (tableau deja trie).
+
+\begin{lstlisting}[caption={Implementation du tri par insertion}]
+void triInsertionVehicules(Vehicule vehicules[], int taille)
+{
+    int i, j;
+    Vehicule vehiculeACaser;
+    
+    for (i = 1; i < taille; i++) {
+        vehiculeACaser = vehicules[i];
+        j = i - 1;
+        
+        /* Decaler les elements plus grands */
+        while (j >= 0 && comparerHorodatages(
+               vehicules[j].entree, 
+               vehiculeACaser.entree) > 0) {
+            vehicules[j + 1] = vehicules[j];
+            j--;
+        }
+        
+        vehicules[j + 1] = vehiculeACaser;
+    }
+}
+\end{lstlisting}
+
+\subsection{Comparaison des algorithmes}
+
+\begin{table}[H]
+\centering
+\caption{Comparaison des algorithmes de tri}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\rowcolor{bleuPrincipal}
+\textcolor{white}{\textbf{Algorithme}} & 
+\textcolor{white}{\textbf{Meilleur}} & 
+\textcolor{white}{\textbf{Moyen}} & 
+\textcolor{white}{\textbf{Pire}} \\
+\hline
+Tri par selection & $O(n^2)$ & $O(n^2)$ & $O(n^2)$ \\
+\hline
+Tri par insertion & $O(n)$ & $O(n^2)$ & $O(n^2)$ \\
+\hline
+\end{tabular}
+\end{table}
+
+\section{Algorithmes de recherche}
+
+\subsection{Recherche sequentielle}
+
+La recherche sequentielle parcourt le tableau element par element jusqu'a trouver la valeur recherchee.
+
+\textbf{Complexite} : $O(n)$
+
+\begin{lstlisting}[caption={Recherche sequentielle}]
+int rechercheSequentielle(Vehicule vehicules[], int taille, 
+                          const char *plaque)
+{
+    int i;
+    
+    for (i = 0; i < taille; i++) {
+        if (strcmp(vehicules[i].plaque, plaque) == 0) {
+            return i;
+        }
+    }
+    
+    return -1; /* Non trouve */
+}
+\end{lstlisting}
+
+\subsection{Recherche dichotomique}
+
+\begin{boiteImportante}
+La recherche dichotomique necessite un tableau \textbf{prealablement trie}. Elle divise l'espace de recherche par deux a chaque iteration.
+\end{boiteImportante}
+
+\textbf{Complexite} : $O(\log n)$
+
+\begin{lstlisting}[caption={Recherche dichotomique}]
+int rechercheDichotomique(Vehicule vehicules[], int taille, 
+                          const char *plaque)
+{
+    int gauche = 0;
+    int droite = taille - 1;
+    int milieu, comparaison;
+    
+    while (gauche <= droite) {
+        milieu = gauche + (droite - gauche) / 2;
+        comparaison = strcmp(plaque, vehicules[milieu].plaque);
+        
+        if (comparaison == 0) {
+            return milieu;
+        } else if (comparaison < 0) {
+            droite = milieu - 1;
+        } else {
+            gauche = milieu + 1;
+        }
+    }
+    
+    return -1;
+}
+\end{lstlisting}
+
+\subsection{Recherche avec drapeau}
+
+La technique du drapeau utilise une variable booleenne pour controler la sortie de boucle :
+
+\begin{lstlisting}[caption={Recherche avec drapeau}]
+int rechercheAvecDrapeau(Vehicule vehicules[], int taille, 
+                         const char *plaque, int *trouve)
+{
+    int i = 0;
+    *trouve = 0; /* Initialisation du drapeau */
+    
+    while (i < taille && *trouve == 0) {
+        if (strcmp(vehicules[i].plaque, plaque) == 0) {
+            *trouve = 1; /* Lever le drapeau */
+        } else {
+            i++;
+        }
+    }
+    
+    return (*trouve == 1) ? i : -1;
+}
+\end{lstlisting}
+
+%% ============================================================================
+%% INTERFACE UTILISATEUR
+%% ============================================================================
+\chapter{Interface utilisateur}
+
+\section{Systeme de menus}
+
+L'interface utilisateur est basee sur un systeme de menus textuels avec navigation hierarchique.
+
+\subsection{Menu principal}
+
+\begin{lstlisting}[caption={Affichage du menu principal}]
+int afficherMenuPrincipal(void)
+{
+    printf("\n");
+    afficherLigne('=', 50);
+    printf("     SYSTEME DE GESTION DE PARKING\n");
+    afficherLigne('=', 50);
+    printf("\n");
+    printf("  1. Gestion des vehicules\n");
+    printf("  2. Gestion des places\n");
+    printf("  3. Statistiques et rapports\n");
+    printf("  4. Afficher la carte du parking\n");
+    printf("  5. Sauvegarder les donnees\n");
+    printf("  6. Charger les donnees\n");
+    printf("  0. Quitter\n");
+    
+    return lireEntier(0, 6);
+}
+\end{lstlisting}
+
+\subsection{Saisie securisee}
+
+Toutes les saisies utilisateur sont validees pour eviter les erreurs :
+
+\begin{lstlisting}[caption={Fonction de saisie securisee}]
+int lireEntier(int min, int max)
+{
+    int valeur, resultat;
+    char buffer[100];
+    
+    do {
+        printf("Votre choix [%d-%d] : ", min, max);
+        
+        if (fgets(buffer, sizeof(buffer), stdin) != NULL) {
+            resultat = sscanf(buffer, "%d", &valeur);
+            
+            if (resultat != 1 || valeur < min || valeur > max) {
+                printf("Erreur : valeur invalide.\n");
+                continue;
+            }
+            return valeur;
+        }
+    } while (1);
+}
+\end{lstlisting}
+
+\section{Affichage des tickets}
+
+\subsection{Ticket d'entree}
+
+Lors de l'enregistrement d'une entree, un ticket est affiche avec les informations du stationnement.
+
+\subsection{Ticket de sortie}
+
+Le ticket de sortie affiche le recapitulatif complet incluant la duree et le montant a payer.
+
+%% ============================================================================
+%% TESTS ET RESULTATS
+%% ============================================================================
+\chapter{Tests et resultats}
+
+\section{Scenarios de test}
+
+\begin{table}[H]
+\centering
+\caption{Scenarios de test realises}
+\begin{tabularx}{\textwidth}{|c|X|c|}
+\hline
+\rowcolor{bleuPrincipal}
+\textcolor{white}{\textbf{Test}} & 
+\textcolor{white}{\textbf{Description}} & 
+\textcolor{white}{\textbf{Resultat}} \\
+\hline
+T1 & Initialisation du parking avec 50 places & Valide \\
+\hline
+T2 & Enregistrement d'entree d'une voiture & Valide \\
+\hline
+T3 & Enregistrement de sortie avec calcul du montant & Valide \\
+\hline
+T4 & Recherche d'un vehicule present & Valide \\
+\hline
+T5 & Recherche d'un vehicule absent & Valide \\
+\hline
+T6 & Affichage de la carte du parking & Valide \\
+\hline
+T7 & Sauvegarde et chargement des donnees & Valide \\
+\hline
+T8 & Gestion du parking plein & Valide \\
+\hline
+\end{tabularx}
+\end{table}
+
+\section{Compilation}
+
+La compilation du projet s'effectue avec la commande suivante :
+
+\begin{lstlisting}[language=bash,caption={Commandes de compilation}]
+# Compilation complete
+make all
+
+# Nettoyage
+make clean
+
+# Execution
+make run
+\end{lstlisting}
+
+%% ============================================================================
+%% DIFFICULTES ET DEMARCHE DE RESOLUTION
+%% ============================================================================
+\chapter{Difficultes rencontrees et demarche de resolution}
+
+\section{Introduction}
+
+La realisation d'un projet de cette envergure comporte inevitablement des defis techniques. Cette section presente de maniere transparente les obstacles rencontres et la methodologie employee pour les surmonter, en mettant l'accent sur l'utilisation intelligente d'outils d'assistance comme ChatGPT.
+
+\section{Principales difficultes techniques}
+
+\subsection{Erreurs de compilation : declarations implicites}
+
+L'une des principales difficultes rencontrees concernait les \textbf{erreurs de declarations implicites de fonctions}. Lors de la compilation, le compilateur GCC generait des erreurs du type :
+
+\begin{lstlisting}[language=bash,caption={Exemple d'erreur de compilation}]
+src/parking_vehicules.c: In function 'enregistrerSortie':
+src/parking_vehicules.c:108:15: error: implicit declaration 
+of function 'calculerMontant' [-Wimplicit-function-declaration]
+  108 |     montant = calculerMontant(dureeMinutes, vehicule->type);
+      |               ^~~~~~~~~~~~~~~
+make: *** [obj/parking_vehicules.o] Erreur 1
+\end{lstlisting}
+
+\textbf{Cause identifiee :} Le fichier \texttt{prototypes.h} contenait bien les declarations des fonctions, mais plusieurs fichiers source ne l'incluaient pas, causant des erreurs de declaration implicite.
+
+\subsection{Organisation modulaire et dependances}
+
+La structure modulaire du projet, bien que benefique pour la maintenabilite, a cree des \textbf{dependances croisees} entre fichiers. Il etait necessaire de s'assurer que chaque fichier source incluait tous les headers necessaires.
+
+\subsection{Gestion des warnings du compilateur}
+
+Plusieurs warnings ont ete generes, notamment :
+\begin{itemize}
+    \item Variables declarees mais non utilisees (\texttt{-Wunused-variable})
+    \item Variables assignees mais jamais lues (\texttt{-Wunused-but-set-variable})
+\end{itemize}
+
+\section{Utilisation intelligente de ChatGPT}
+
+\subsection{Approche methodique de resolution}
+
+Plutot que de simplement demander << Corrige mon code >>, j'ai adopte une \textbf{demarche structuree} :
+
+\begin{enumerate}[label=\textcolor{bleuPrincipal}{\arabic*.}]
+    \item \textbf{Presentation du contexte complet} : fourniture des messages d'erreur exacts, de la structure du projet, et des fichiers concernes
+    \item \textbf{Analyse guidee} : demande d'explication sur la cause des erreurs avant toute correction
+    \item \textbf{Verification systematique} : demande de verifier tous les fichiers pour detecter des problemes similaires
+    \item \textbf{Correction preventive} : application des corrections a l'ensemble du projet pour eviter de futures erreurs
+\end{enumerate}
+
+\subsection{Identification systematique des problemes}
+
+Lorsque l'erreur \texttt{calculerMontant} est apparue dans \texttt{parking\_vehicules.c}, j'ai demande a ChatGPT de :
+
+\begin{boiteImportante}
+\textbf{Verifier les autres fichiers pour voir si on a les memes problemes}
+
+Cette approche proactive a permis d'identifier et corriger \textbf{8 fichiers sources} simultanement, evitant ainsi de decouvrir les erreurs une par une lors de compilations successives.
+\end{boiteImportante}
+
+\subsection{Comprehension des solutions proposees}
+
+Chaque correction a ete accompagnee d'une explication, permettant de :
+\begin{itemize}[label=\textcolor{vertCode}{$\checkmark$}]
+    \item Comprendre la \textbf{cause profonde} du probleme
+    \item Apprendre les \textbf{bonnes pratiques} d'inclusion de headers en C
+    \item Eviter de reproduire l'erreur dans de futurs projets
+\end{itemize}
+
+\section{Lecons tirees et limites}
+
+\subsection{Points forts de l'approche}
+
+\begin{table}[H]
+\centering
+\caption{Avantages de l'utilisation intelligente de ChatGPT}
+\begin{tabularx}{\textwidth}{|l|X|}
+\hline
+\rowcolor{bleuPrincipal}
+\textcolor{white}{\textbf{Avantage}} & \textcolor{white}{\textbf{Impact}} \\
+\hline
+Rapidite & Resolution en quelques minutes au lieu d'heures de debugging \\
+\hline
+Systematique & Detection proactive de tous les fichiers concernes \\
+\hline
+Pedagogique & Explications claires des causes et solutions \\
+\hline
+Preventif & Correction globale evitant les erreurs futures \\
+\hline
+\end{tabularx}
+\end{table}
+
+\subsection{Limites et vigilance necessaire}
+
+\textbf{Points de vigilance identifies :}
+
+\begin{enumerate}[label=\textcolor{orangeAccent}{!}]
+    \item \textbf{Verification manuelle} : toujours verifier les modifications proposees
+    \item \textbf{Comprehension necessaire} : ne pas appliquer aveugelement sans comprendre
+    \item \textbf{Test systematique} : compiler et tester apres chaque modification
+    \item \textbf{Coherence du code} : s'assurer que les corrections respectent l'architecture globale
+\end{enumerate}
+
+\subsection{Competences developpees}
+
+Cette experience a permis de developper :
+\begin{itemize}
+    \item La \textbf{formulation precise} de problemes techniques
+    \item L'\textbf{analyse critique} des solutions proposees
+    \item La \textbf{gestion de projet} avec des outils d'IA
+    \item La \textbf{prevention} plutot que la correction reactive
+\end{itemize}
+
+\section{Conclusion sur la demarche}
+
+L'utilisation de ChatGPT s'est revelee \textbf{efficace} lorsqu'elle est encadree par une demarche rigoureuse. Plutot que de remplacer la reflexion, l'outil a servi d'\textbf{assistant intelligent} permettant :
+
+\begin{boiteImportante}
+\begin{itemize}
+    \item D'accelerer l'identification des problemes
+    \item D'obtenir des explications pedagogiques
+    \item D'appliquer des corrections systematiques et coherentes
+    \item De gagner en autonomie pour les futurs projets
+\end{itemize}
+\end{boiteImportante}
+
+Cette experience illustre que la \textbf{maitrise des outils d'IA} fait desormais partie des competences essentielles de l'ingenieur moderne.
+
+%% ============================================================================
+%% CONCLUSION
+%% ============================================================================
+\chapter*{Conclusion}
+\addcontentsline{toc}{chapter}{Conclusion}
+
+\section*{Bilan du projet}
+
+Ce projet de gestion de parking nous a permis de mettre en pratique l'ensemble des notions etudiees durant le cours d'algorithmique. Nous avons pu appliquer concretement :
+
+\begin{itemize}[label=\textcolor{vertCode}{$\checkmark$}]
+    \item Les \textbf{variables et types de base} pour stocker les donnees
+    \item Les \textbf{structures de controle} (conditions et boucles) pour la logique du programme
+    \item Les \textbf{tableaux} pour gerer les collections de places et vehicules
+    \item Les \textbf{structures} pour modeliser les entites metier
+    \item Les \textbf{fonctions} pour organiser le code de maniere modulaire
+    \item Les \textbf{pointeurs} pour manipuler les donnees efficacement
+    \item Les \textbf{algorithmes de tri} (selection et insertion) pour ordonner les donnees
+    \item Les \textbf{algorithmes de recherche} (sequentielle et dichotomique) pour retrouver les informations
+\end{itemize}
+
+\section*{Competences acquises}
+
+Au terme de ce projet, les competences suivantes ont ete consolidees :
+
+\begin{enumerate}[label=\textcolor{bleuPrincipal}{\arabic*.}]
+    \item Analyse et conception d'un systeme informatique
+    \item Programmation structuree en langage C
+    \item Organisation modulaire du code source
+    \item Documentation technique et commentaires de code
+    \item Tests et validation du logiciel
+\end{enumerate}
+
+\section*{Perspectives}
+
+Des ameliorations futures pourraient etre envisagees :
+\begin{itemize}
+    \item Implementation d'une interface graphique
+    \item Ajout d'un systeme de reservation en ligne
+    \item Integration avec des systemes de paiement electronique
+    \item Utilisation d'une base de donnees relationnelle
+\end{itemize}
+
+\vspace{2cm}
+
+\begin{center}
+\textit{Projet realise dans le cadre du module d'Algorithmique}
+
+\textit{Charge de cours : Dr ANAKPA}
+
+\vspace{1cm}
+
+{\small Annee academique 2025--2026}
+\end{center}
+
+\end{document}
